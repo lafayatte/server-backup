@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--上面2行的是约束依赖，固定照抄就好,下面的才是要自己编写的地方-->
+<!--写mapper的配置文件第一步就是要写<mapper></mapper>标签-->
+<!--<mapper></mapper>标签里包含着各个CURD操作的SQL语句-->
+<mapper namespace="com.cug.server.dao.AccidentMapper">
+    <!--定义一个名为contractMap的返回类型，用作查询事故信息时的返回-->
+    <resultMap id="AccidentMap" type="com.cug.server.bean.Accident">
+        <id column="aId" property="aId" jdbcType="INT"/>
+        <result column="accTime" property="accTime" jdbcType="TIMESTAMP"/>
+        <result column="flag" property="flag" jdbcType="TINYINT"/>
+        <result column="result" property="result" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--插入语句,除了aId、accTime、flag，其他都为空-->
+    <insert id="insertAccident" parameterType="com.cug.server.bean.Accident">
+        insert into accidents(aId, accTime, sensor, v1, v2, result, flag, image)values(#{aId}, #{accTime}, #{sensor}, #{v1}, #{v2}, #{result}, #{flag}, #{image})
+    </insert>
+
+    <!--查找语句,根据事故ID查找事故信息-->
+    <select id="selectAccident" parameterType="java.lang.Integer" resultMap="AccidentMap">
+        select aId, accTime, result, flag, image from accidents where aId = #{aId}
+    </select>
+
+</mapper>

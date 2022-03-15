@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--上面2行的是约束依赖，固定照抄就好,下面的才是要自己编写的地方-->
+<!--写mapper的配置文件第一步就是要写<mapper></mapper>标签-->
+<!--<mapper></mapper>标签里包含着各个CURD操作的SQL语句-->
+<mapper namespace="com.cug.server.dao.VehicleMapper">
+
+    <!--插入语句,id要与UserMapper文件中表示插入的函数名一致，parameterType表示函数的输入参数类型-->
+    <insert id="insertVehicle" parameterType="com.cug.server.bean.Vehicle">
+        insert into vehicles(vId, gId, pk, ownerId, debitCard, vehicleLicense, driverLicense)values(#{vId},#{gId},#{pk},#{ownerId},#{debitCard},#{vehicleLicense},#{driverLicense})
+    </insert>
+
+    <!--查找语句,查找同组下的所有车公钥,构成集合返回-->
+    <select id="selectPk" parameterType="java.lang.Integer" resultMap="java.util.List">
+        select pk from vehicles where gId = #{gId}
+    </select>
+
+    <!--查找语句，根据VID查找银行卡号-->
+    <select id="selectDebitCard" parameterType="java.lang.Integer" resultMap="java.lang.String">
+        select debitCard from vehicles WHERE vId = #{vId}
+    </select>
+
+
+</mapper>

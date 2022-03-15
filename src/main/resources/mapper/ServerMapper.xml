@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--上面2行的是约束依赖，固定照抄就好,下面的才是要自己编写的地方-->
+<!--写mapper的配置文件第一步就是要写<mapper></mapper>标签-->
+<!--<mapper></mapper>标签里包含着各个CURD操作的SQL语句-->
+<mapper namespace="com.cug.server.dao.ServerMapper">
+    <!--定义一个名为contractMap的返回类型-->
+    <resultMap id="contractMap" type="com.cug.server.bean.Server">
+        <id column="conName" property="conName" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+    </resultMap>
+    <!-- <resultMap> 是为<select>定义返回的类型，因为select语句是查询语句，肯定要返回查询结果。
+    id=“contractMap”是说定义的这个resultMap给它一个名字“contractMap”，type指定返回的结果类型。
+    <resultMap>中的<id>是指明唯一标识是实体类(User)中的哪一个变量(column)，该变量对应数据表中的哪一个字段(property)
+    而<resultMap>中的<result>则是指明除了id之外的字段。-->
+
+    <!--插入语句,id要与UserMapper文件中表示插入的函数名一致，parameterType表示函数的输入参数类型-->
+    <insert id="insertContract" parameterType="com.cug.server.bean.Server">
+        insert into contracts(conName, address)values(#{conName,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR})
+    </insert>
+
+    <!--删除语句-->
+    <delete id="deleteContract" parameterType="java.lang.String">
+        delete from contracts where conName =#{conName,jdbcType=VARCHAR}
+    </delete>
+
+    <!--查找语句,resultMap表示函数返回的类型-->
+    <select id="selectContract" parameterType="java.lang.String" resultMap="contractMap">
+        select * from contracts where conName = #{conName,jdbcType=VARCHAR}
+    </select>
+
+    <!--查找语句-->
+    <select id="selectAll" resultMap="contractMap">
+        select * from contracts
+    </select>
+
+    <!--修改语句-->
+    <update id="updateContract" parameterType="com.cug.server.bean.Server">
+        update contracts set conName=#{conName,jdbcType=VARCHAR},address=#{address,jdbcType=VARCHAR} where conName=#{conName,jdbcType=VARCHAR}
+    </update>
+</mapper>
